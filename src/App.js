@@ -1,43 +1,49 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
-const Father = styled.div`
+const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
+`;
+const rotationAnimation = keyframes`
+  0% {
+    transform: rotate(0deg);
+    border-radius: 0px;
+  }
+  50% {
+    
+    border-radius: 100px;
+  }
+  100%{
+    transform:rotate(360deg);
+    border-radius: 0px;
+  }
 `;
 
-const Btn = styled.button`
-  margin: 10px;
-  color: white;
+const Box = styled.div`
+  height: 200px;
+  width: 200px;
   background-color: tomato;
-  border: 0;
-  width: 50px;
-  height: 20px;
-  border-radius: 15px;
-  text-align: center;
-`;
-
-const Input = styled.input.attrs({ required: true })`
-  margin: 10px;
-  background-color: tomato;
-  width: 100px;
-  height: 20px;
-  border: 0px;
-  border-radius: 5px;
+  animation: ${rotationAnimation} 1s linear infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    font-size: 60px;
+    &:hover {
+      font-size: 100px;
+    }
+    &:active {
+      opacity: 30%;
+    }
+  }
 `;
 
 function App() {
   return (
-    <Father>
-      <Input />
-      <Input />
-      <Input />
-      <Input />
-      <Input />
-      <Btn>Log in</Btn>
-      <Btn as="a" href="https://www.youtube.com">
-        go
-      </Btn>
-    </Father>
+    <Wrapper>
+      <Box>
+        <span>😀</span>
+      </Box>
+    </Wrapper>
   );
 }
 
