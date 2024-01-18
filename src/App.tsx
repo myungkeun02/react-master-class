@@ -1,31 +1,38 @@
 import { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { ThemeProvider, keyframes } from "styled-components";
+import { darkTheme } from "./theme";
+import { lightTheme } from "./theme";
+
+const Container = styled.div`
+  background-color: ${(props) => props.theme.bgColor};
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+`;
+const Title = styled.h1`
+  color: ${(props) => props.theme.textColor};
+  font-size: 100px;
+`;
+const Btn = styled.button`
+  background-color: ${(props) => props.theme.btnColor};
+  color: ${(props) => props.theme.textColor};
+  width: 200px;
+  height: 100px;
+  font-size: 40px;
+`;
 
 function App() {
-  const [value, setValue] = useState("");
-  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value },
-    } = event;
-    setValue(value);
-    console.log(value);
-  };
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("hello", value );
-  };
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input
-          value={value}
-          onChange={onChange}
-          type="text"
-          placeholder="username"
-        ></input>
-        <button>Log in</button>
-      </form>
-    </div>
+    <ThemeProvider theme={lightTheme}>
+      <Container>
+        <Title>Hello!</Title>
+        <Btn>dark theme</Btn>
+      </Container>
+    </ThemeProvider>
   );
 }
 
