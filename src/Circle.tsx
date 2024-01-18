@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 // styled-components type interpace
@@ -10,7 +11,6 @@ interface ContaninerProps {
 interface CicleProps {
   bgColor: string;
   borderColor?: string;
-  text?: string;
 }
 
 // styled-component
@@ -26,11 +26,16 @@ const Cantainer = styled.div<ContaninerProps>`
 `;
 
 // component
-function Circle({ bgColor, borderColor, text = "default text" }: CicleProps) {
+function Circle({ bgColor, borderColor }: CicleProps) {
+  const [value, setValue] = useState<number | string>(1);
+  setValue(2);
+  setValue("hello");
+  // setValue(true);
   return (
-    <Cantainer bgColor={bgColor} borderColor={borderColor ?? bgColor}>
-      {text}
-    </Cantainer>
+    <Cantainer
+      bgColor={bgColor}
+      borderColor={borderColor ?? bgColor}
+    ></Cantainer>
   );
 }
 
