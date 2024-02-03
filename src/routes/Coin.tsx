@@ -217,6 +217,7 @@ function Coin() {
               <Chart coinId={coinId} />
             </Route>
           </Switch>
+          <Link to={{}}></Link>
         </>
       )}
       {loading ? <Loader>Loading...</Loader> : null}
@@ -224,3 +225,7 @@ function Coin() {
   );
 }
 export default Coin;
+
+//#TODO 돌아가기 버튼
+//#TODO price 탭 꾸미기
+//#TODO candlestick chart로 바꾸는 기능 구현
