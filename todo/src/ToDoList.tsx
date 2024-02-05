@@ -34,17 +34,45 @@ import { useForm } from "react-hook-form";
 // }
 
 function ToDoList() {
-  const { register, watch } = useForm();
-  console.log(watch());
+  const { register, handleSubmit, formState } = useForm();
+  const onValid = (data: any) => {
+    console.log(data);
+  };
+  console.log(formState.errors);
+
   return (
     <div>
-      <form>
-        <input {...register("email")} placeholder="email"></input>
-        <input {...register("firstName")} placeholder="firstName"></input>
-        <input {...register("lastName")} placeholder="LastName"></input>
-        <input {...register("username")} placeholder="username"></input>
-        <input {...register("password")} placeholder="password"></input>
-        <input {...register("password1")} placeholder="password1"></input>
+      <form
+        style={{ display: "flex", flexDirection: "column" }}
+        onSubmit={handleSubmit(onValid)}
+      >
+        <input
+          {...register("email", { required: true })}
+          placeholder="email"
+        ></input>
+        <input
+          {...register("firstName", { required: true })}
+          placeholder="firstName"
+        ></input>
+        <input
+          {...register("lastName", { required: true })}
+          placeholder="LastName"
+        ></input>
+        <input
+          {...register("username", { required: true, minLength: 10 })}
+          placeholder="username"
+        ></input>
+        <input
+          {...register("password", { required: true, minLength: 5 })}
+          placeholder="password"
+        ></input>
+        <input
+          {...register("password1", {
+            required: "Password is required",
+            minLength: { value: 5, message: "Your password is too short" },
+          })}
+          placeholder="password1"
+        ></input>
         <button>Add</button>
       </form>
     </div>
