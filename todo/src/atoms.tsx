@@ -1,8 +1,14 @@
 import { atom, selector } from "recoil";
 
+export enum Categories {
+  "TO_DO",
+  "DOING",
+  "DONE",
+}
+
 export interface IToDo {
   text: string;
-  category: "DONE" | "DOING" | "TO_DO";
+  category: Categories;
   id: number;
 }
 
@@ -12,9 +18,9 @@ export const toDoState = atom<IToDo[]>({
   default: [],
 });
 
-export const categoryState = atom({
+export const categoryState = atom<Categories>({
   key: "category",
-  default: "",
+  default: Categories.TO_DO,
 });
 
 //toDoState에 담긴 배열을 category별로 분류하여 세개의 각각 다른 배열에 정리 toDos[0] -> todo, toDos[1] -> doing, toDos[2] -> done
