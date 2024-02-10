@@ -1,7 +1,7 @@
-import App from "./App";
+import App from "./App.tsx";
 import ReactDOM from "react-dom";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
-import { darkTheme } from "./them";
+import { darkTheme } from "./them.tsx";
 import React from "react";
 import { RecoilRoot } from "recoil";
 
