@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import DraggableCard from "./DraggableCard.tsx";
 import styled from "styled-components";
@@ -40,9 +40,16 @@ interface IAreaProps {
   isDraggingFromThis: boolean;
 }
 function Board({ toDos, boardId }: IBoardProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const onclick = () => {
+    inputRef.current?.focus();
+  };
+
   return (
     <Wrapper>
       <Title>{boardId}</Title>
+      <input ref={inputRef} placeholder="grab me"></input>
+      <button onClick={onclick}>Click me</button>
       <Droppable droppableId={boardId}>
         {(magic, snapshot) => (
           <Area
