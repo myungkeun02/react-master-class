@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   width: 300px;
-  padding: 20px 10px;
+  padding: 10px 10px;
   padding-top: 10px;
   background-color: ${(props) => props.theme.boardColor};
   border-radius: 5px;
@@ -22,12 +22,14 @@ const Title = styled.h2`
 const Area = styled.div<IAreaProps>`
   background-color: ${(props) =>
     props.isDraggingOver
-      ? "tomato"
+      ? "#dfe6e9"
       : props.isDraggingFromThis
-      ? "green"
-      : "yellowgreen"};
+      ? "#b2bec3"
+      : "transparent"};
   flex-grow: 1;
   transition: background-color 0.3s ease-in-out;
+  padding: 20px 20px;
+  border-radius: 5px;
 `;
 interface IBoardProps {
   toDos: string[];
