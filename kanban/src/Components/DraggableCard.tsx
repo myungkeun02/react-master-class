@@ -2,36 +2,43 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-const Card = styled.div<{ isDragging: boolean }>`
-  border-radius: 5px;
-  margin-bottom: 5px;
-  padding: 10px;
-  background-color: ${(props) =>
-    props.isDragging ? "#e4f2ff" : props.theme.cardColor};
-  box-shadow: ${(props) =>
-    props.isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.05)" : "none"};
-`;
-
-interface IDragabbleCardProps {
+interface IProps {
   toDoId: number;
   toDoText: string;
   index: number;
 }
 
-function DraggableCard({ toDoId, toDoText, index }: IDragabbleCardProps) {
+interface ICardProps {
+  isDragging: boolean;
+}
+
+const Card = styled.div<ICardProps>`
+  border-radius: 15px;
+  padding: 10px;
+  margin-bottom: 8px;
+  background-color: ${(props) =>
+    props.isDragging ? props.theme.isDragging : props.theme.cardColor};
+  user-select: none;
+  box-shadow: ${(props) =>
+    props.isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.05)" : "none"};
+  font-weight: 500;
+  color: ${(props) => props.theme.text};
+`;
+
+const DraggableCard = ({ toDoId, toDoText, index }: IProps) => {
   return (
     <Draggable draggableId={toDoId + ""} index={index}>
       {(magic, snapshot) => (
         <Card
-          isDragging={snapshot.isDragging}
           ref={magic.innerRef}
           {...magic.dragHandleProps}
           {...magic.draggableProps}
+          isDragging={snapshot.isDragging}
         >
           {toDoText}
         </Card>
       )}
     </Draggable>
   );
-}
+};
 export default React.memo(DraggableCard);

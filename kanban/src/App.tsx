@@ -1,9 +1,11 @@
-import React from "react";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
+import { DragDropContext, Droppable, DragStart } from "react-beautiful-dnd";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "./atoms.tsx";
+import { BoardState, toDoState, TrashCanState } from "./atoms.tsx";
 import Board from "./Components/Board.tsx";
+import React from "react";
+import { onDrageEnd } from "./utills.tsx";
+import Trash from "./Components/Trash.tsx";
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,51 +22,49 @@ const Boards = styled.div`
   width: 100%;
   gap: 10px;
 `;
+
+const Title = styled.h1`
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+`;
+
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
-  const onDragEnd = (info: DropResult) => {
-    console.log(info);
-    const { destination, source } = info;
-    if (!destination) return;
-    if (destination?.droppableId === source.droppableId) {
-      // same board movement.
-      setToDos((allBoards) => {
-        const boardCopy = [...allBoards[source.droppableId]];
-        const taskObj = boardCopy[source.index];
-        boardCopy.splice(source.index, 1);
-        boardCopy.splice(destination?.index, 0, taskObj);
-        return {
-          ...allBoards,
-          [source.droppableId]: boardCopy,
-        };
-      });
-    }
-    if (destination.droppableId !== source.droppableId) {
-      // cross board movement
-      setToDos((allBoards) => {
-        const sourceBoard = [...allBoards[source.droppableId]];
-        const taskObj = sourceBoard[source.index];
-        const destinationBoard = [...allBoards[destination.droppableId]];
-        sourceBoard.splice(source.index, 1);
-        destinationBoard.splice(destination?.index, 0, taskObj);
-        return {
-          ...allBoards,
-          [source.droppableId]: sourceBoard,
-          [destination.droppableId]: destinationBoard,
-        };
-      });
-    }
+  const [boards, setBoards] = useRecoilState(BoardState);
+  const setTrashCan = useSetRecoilState(TrashCanState);
+  const onBeforeDragStart = (info: DragStart) => {
+    if (info.type === "DEFAULT") setTrashCan(true);
   };
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext
+      onDragEnd={(info) => onDrageEnd(info, setBoards, setToDos, setTrashCan)}
+      onBeforeDragStart={onBeforeDragStart}
+    >
       <Wrapper>
-        <Boards>
-          {Object.keys(toDos).map((boardId) => (
-            <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
-          ))}
-        </Boards>
+        <Title>Kanban TODODO</Title>
+        <Droppable droppableId="boards" direction="horizontal" type="board">
+          {(magic) => (
+            <Boards ref={magic.innerRef} {...magic.droppableProps}>
+              {boards.map((boardId, index) => (
+                <Board
+                  boardId={boardId}
+                  toDos={toDos[boardId]}
+                  index={index}
+                  key={index}
+                />
+              ))}
+              {magic.placeholder}
+            </Boards>
+          )}
+        </Droppable>
+        <Trash />
       </Wrapper>
     </DragDropContext>
   );
 }
+
 export default App;
