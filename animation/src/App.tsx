@@ -6,6 +6,19 @@ const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Title = styled.h1`
+  margin: 20px;
+  font-size: 50px;
+  font-weight: 500;
+`;
+const Boxs = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
   justify-content: center;
   align-items: center;
 `;
@@ -76,13 +89,16 @@ const circleVariants2 = {
 function App() {
   return (
     <Wrapper>
-      <Box1 variants={boxVariants1} initial="start" animate="end" />
-      <Box2 variants={boxVariants2} initial="start" animate="end">
-        <Circle variants={circleVariants2} />
-        <Circle variants={circleVariants2} />
-        <Circle variants={circleVariants2} />
-        <Circle variants={circleVariants2} />
-      </Box2>
+      <Title>Animetion</Title>
+      <Boxs>
+        <Box1 variants={boxVariants1} initial="start" animate="end" />
+        <Box2 variants={boxVariants2} initial="start" animate="end">
+          <Circle variants={circleVariants2} />
+          <Circle variants={circleVariants2} />
+          <Circle variants={circleVariants2} />
+          <Circle variants={circleVariants2} />
+        </Box2>
+      </Boxs>
     </Wrapper>
   );
 }
