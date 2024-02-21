@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import { motion } from "framer-motion";
-import React, { useRef } from "react";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import React, { useEffect, useRef } from "react";
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: linear-gradient(135deg, rgb(186, 220, 88), rgb(236, 240, 222));
 `;
 
 const Title = styled.h1`
@@ -71,6 +72,16 @@ const Box4 = styled(motion.div)`
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
+const Box5 = styled(motion.div)`
+  margin: 20px;
+  width: 200px;
+  height: 200px;
+  background-color: 255, 255, 255, 0.1;
+  border-radius: 40px;
+  border: 0.5px solid rgb(180, 180, 180);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
 const Circle2 = styled(motion.div)`
   background-color: rgb(180, 180, 180);
   height: 70px;
@@ -124,12 +135,21 @@ const boxVariants3 = {
   click: { scale: 1, borderRadius: "100px" },
 };
 
-const miniBoxVariants4 = {};
-
 function App() {
   const box4Ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const rotateZ = useTransform(x, [-800, 800], [-360, 360]);
+  const gradient = useTransform(
+    x,
+    [-800, 800],
+    [
+      "linear-gradient(135deg, rgb(186, 220, 88), rgb(236, 240, 222))",
+      "linear-gradient(135deg, rgb(236, 240, 222), rgb(186, 220, 88))",
+    ]
+  );
+
   return (
-    <Wrapper>
+    <Wrapper style={{ background: gradient }}>
       <Title>Animetion</Title>
       <Boxs>
         <Box1 variants={boxVariants1} initial="start" animate="end" />
@@ -143,11 +163,12 @@ function App() {
         <Box4 ref={box4Ref}>
           <MiniBox4
             drag
+            dragSnapToOrigin
             dragConstraints={box4Ref}
             dragElastic={0.5}
-            variants={miniBoxVariants4}
           ></MiniBox4>
         </Box4>
+        <Box5 style={{ x, rotateZ }} drag="x" dragSnapToOrigin></Box5>
       </Boxs>
     </Wrapper>
   );
