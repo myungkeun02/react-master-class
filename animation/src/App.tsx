@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import {
+  AnimatePresence,
   motion,
   useMotionValue,
   useTransform,
   useViewportScroll,
 } from "framer-motion";
-import React, { useEffect, useRef } from "react";
-import { start } from "repl";
+import React, { useRef, useState } from "react";
 
 const Wrapper = styled(motion.div)`
   height: 300vh;
@@ -30,6 +30,16 @@ const Boxs = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+`;
+
+const Box8Div = styled.div`
+  margin: 20px;
+  height: 260px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const Box1 = styled(motion.div)`
@@ -112,6 +122,18 @@ const Box7 = styled(motion.div)`
   align-items: center;
 `;
 
+const Box8 = styled(motion.div)`
+  width: 400px;
+  height: 200px;
+  background-color: 255, 255, 255, 0.1;
+  border-radius: 40px;
+  border: 0.5px solid rgb(180, 180, 180);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const Circle2 = styled(motion.div)`
   background-color: rgb(180, 180, 180);
   height: 70px;
@@ -132,6 +154,14 @@ const MiniBox4 = styled(motion.div)`
 const Svg7 = styled.svg`
   width: 150px;
   height: 150px;
+`;
+
+const Button8 = styled.button`
+  width: 70px;
+  height: 40px;
+  margin: 0px;
+  background-color: rgb(180, 180, 180);
+  border-radius: 10px;
 `;
 
 const boxVariants1 = {
@@ -181,6 +211,22 @@ const svgVariants7 = {
   },
 };
 
+const BoxVariants8 = {
+  initial: {
+    opacity: 0,
+    scale: 0,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    rotateZ: 360,
+  },
+  leaving: {
+    opacity: 0,
+    y: 50,
+  },
+};
+
 function App() {
   const box4Ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -195,6 +241,8 @@ function App() {
   );
   const { scrollYProgress } = useViewportScroll();
   const scale = useTransform(scrollYProgress, [0, 1], [1, 5]);
+  const [showing, setShowing] = useState(false);
+  const togggleShowing = () => setShowing((prev) => !prev);
 
   return (
     <Wrapper style={{ background: gradient }}>
@@ -239,6 +287,19 @@ function App() {
             />
           </Svg7>
         </Box7>
+        <Box8Div>
+          <AnimatePresence>
+            {showing ? (
+              <Box8
+                variants={BoxVariants8}
+                initial="initial"
+                animate="visible"
+                exit="leaving"
+              />
+            ) : null}
+          </AnimatePresence>
+          <Button8 onClick={togggleShowing}>Click Me!!</Button8>
+        </Box8Div>
       </Boxs>
     </Wrapper>
   );
